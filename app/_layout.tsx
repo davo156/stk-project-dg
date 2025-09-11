@@ -1,29 +1,24 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import { AppProvider } from './core/context/auth.provider';
+import { BottomTabsNavigator } from './presentation/routes/BottomTabsNavigator';
+import { LoginScreen } from './presentation/screens/auth/LoginScreen';
+
+export type RootStackParams = {
+  Login: undefined;
+  Home: undefined;
+}
+
+const Stack = createNativeStackNavigator();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    <AppProvider>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name='Login' component={ LoginScreen } options={{ gestureEnabled: false }} />
+        <Stack.Screen name='Home' component={ BottomTabsNavigator } options={{ gestureEnabled: false }} />
+      </Stack.Navigator>
+    </AppProvider>
+  )
 }
