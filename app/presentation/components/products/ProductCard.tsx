@@ -1,10 +1,10 @@
 
+import { RootStackParams } from '@/app/_layout';
 import { globalStyles } from '@/app/config/app-theme';
 import { Product } from '@/app/core/entities/product.entity';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { HomeStackParams } from '../../routes/HomeStackNavigator';
 
 interface Props {
   product: Product;
@@ -12,11 +12,18 @@ interface Props {
 
 export const ProductCard = ({ product }: Props) => {
 
-  const navigation = useNavigation<NavigationProp<HomeStackParams>>();
+  //const navigation = useNavigation<NavigationProp<HomeStackParams>>();
+  const navigation = useNavigation<NavigationProp<RootStackParams>>();
+
+  const [id,setID] = useState(0);
+
+  useEffect(() =>{
+    setID(product.id)
+  },[]);
 
   return (
     <Pressable
-      onPress={ () => navigation.navigate('ProductDetail', { product }) }
+      onPress={ () => navigation.navigate('ProductDetail', {id}) }
       style={ ({ pressed }) => ({
         width: '48%',
         height: 350,
