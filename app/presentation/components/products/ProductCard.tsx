@@ -13,9 +13,10 @@ import { useProductUserPersistStore } from '../../hooks/useFavoriteProductsStore
 
 interface Props {
   product: Product;
+  fromProfile?: boolean;
 }
 
-export const ProductCard = ({ product }: Props) => {
+export const ProductCard = ({ product, fromProfile = false }: Props) => {
 
   //const navigation = useNavigation<NavigationProp<HomeStackParams>>();
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
@@ -37,23 +38,20 @@ export const ProductCard = ({ product }: Props) => {
     <Pressable
       onPress={ () => navigation.navigate('ProductDetail', {id}) }
       style={ ({ pressed }) => ({
-        width: '48%',
-        height: 350,
+        width: fromProfile ? '32%' : '48%',
+        height: fromProfile ? 150 : 350,
         opacity: pressed ? 0.8 : 1,
       })}
     >
       <View style={ styles.imageContainer }>
         <View style={{ flex: 1 }}>
-          <IonIcon name={ product.isFavorite ? 'bookmark' : 'bookmark-outline' } color={ globalColors.accent } />
+          {
+            route.name!=='Profile' ? <IonIcon name={ showFavIcon ? 'bookmark' : 'bookmark-outline' } color={ globalColors.accent } /> : null
+          }
           <Image style={ styles.image } source={{ uri: product.thumbnail }} />
         </View>
         <Text style={ globalStyles.title }>{ product.title }</Text>
         <Text style={ globalStyles.price }>${ product.price }</Text>
-        {
-          showFavIcon && route.name!=='Profile' ? 
-            <Text>Icon here :)</Text>
-          : null
-        }
       </View>
     </Pressable>
   )

@@ -4,12 +4,10 @@ import { useUserContext } from '@/app/core/context/auth.provider';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Easing, Image, Pressable, StyleSheet, Text, View } from 'react-native';
-
-import { useSecureStore } from '../../hooks/useLoginStore';
-
+import { Animated, Easing, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ProductsList } from '../../components/products/ProductsList';
 import { useProductUserPersistStore } from '../../hooks/useFavoriteProductsStore';
+import { useSecureStore } from '../../hooks/useLoginStore';
 
 export const ProfileScreen = () => {
   const { user, setUser } = useUserContext();
@@ -104,34 +102,36 @@ export const ProfileScreen = () => {
   }
 
   return (
-    <View style={{ flex: 1, padding: 10 }}>
-      <Text style={ globalStyles.header }>Welcome to your profile!</Text>
-      <View style={ styles.mainContainer }>
-        <Pressable 
-          style={{ flex: 1 }}
-          onPress={ doShaking }
-        >
-          <Animated.View style={[ animatedStyle ]}>
-            <Image style={ styles.image } source={{ uri: image ? image : user?.image }} />
-          </Animated.View>
-        </Pressable>
-        <View style={ styles.infoContainer }>
-          <Text style={ globalStyles.titleBold }>{ user?.name }</Text>
-          <Text style={ globalStyles.title }>{ user?.username }</Text>
-          <Text style={ globalStyles.title }>{ user?.email }</Text>
+    <ScrollView>
+      <View style={{ flex: 1, padding: 10 }}>
+        <Text style={ globalStyles.header }>Welcome to your profile!</Text>
+        <View style={ styles.mainContainer }>
+          <Pressable 
+            style={{ flex: 1 }}
+            onPress={ doShaking }
+          >
+            <Animated.View style={[ animatedStyle ]}>
+              <Image style={ styles.image } source={{ uri: image ? image : user?.image }} />
+            </Animated.View>
+          </Pressable>
+          <View style={ styles.infoContainer }>
+            <Text style={ globalStyles.titleBold }>{ user?.name }</Text>
+            <Text style={ globalStyles.title }>{ user?.username }</Text>
+            <Text style={ globalStyles.title }>{ user?.email }</Text>
+            <Pressable
+              style={ styles.logout }
+              onPress={ onLogout }
+            >
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>Logout</Text>
+            </Pressable>
+          </View>
+        </View>
+        <View style={styles.listContainer}>
+          <Text style={ [globalStyles.header2, { paddingLeft: 10 }] }>Archived products</Text>
+          <ProductsList fromProfile={ true } products={userProductList} />
         </View>
       </View>
-      <Pressable
-        style={ styles.logout }
-        onPress={ onLogout }
-      >
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>Logout</Text>
-      </Pressable>
-      <View style={styles.listContainer}>
-        <Text>My favorites</Text>
-        <ProductsList products={userProductList} />
-      </View>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
     flexDirection: 'column',
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   image: {
     borderRadius: 10,
