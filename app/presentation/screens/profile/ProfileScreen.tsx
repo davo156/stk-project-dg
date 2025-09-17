@@ -1,15 +1,33 @@
-import { globalStyles } from '@/app/config/app-theme';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { globalColors, globalStyles } from '@/app/config/app-theme';
 import { useUserContext } from '@/app/core/context/auth.provider';
-import React, { useRef } from 'react';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSecureStore } from '../../hooks/useLoginStore';
 
 export const ProfileScreen = () => {
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const shake = useRef( new Animated.Value(0)).current;
+
+  const { onRemove } = useSecureStore()
+  const navigator = useNavigation();
+
+  const [image, setImage] = useState<string | null>(null);
+  const [permission, setPermission] = useState<boolean>(false);
+
+  const [status, requestPermission] = ImagePicker.useCameraPermissions();
 
   const animatedStyle = {
     transform: [{ translateX: shake }]
   }
+
+  useEffect(() => {
+    if (status?.granted) {
+      pickImage();
+    }
+  }, [permission])
 
   const doShaking = () => {
     shake.setValue(0);
@@ -38,7 +56,46 @@ export const ProfileScreen = () => {
         easing: Easing.linear,
         useNativeDriver: true,
       }),
-    ]).start();
+    ]).start((completion) => {
+      if( completion.finished ) {
+
+        if ( status?.granted ) {
+          pickImage()
+        } else if (status?.canAskAgain) {
+          requestPermission().finally(() => {
+            setPermission(true)
+          })
+        }
+      }
+    });
+  }
+
+  const pickImage = async() => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ['images'],
+      allowsEditing: false,
+      aspect: [4,3],
+      quality: 1
+    })
+
+    if ( !result.canceled ) {
+      setImage(result.assets[0].uri);
+      setUser({
+        name: user?.name ?? '', 
+        username: user?.username ?? '', 
+        email: user?.email ?? '', 
+        image: result.assets[0].uri
+      })
+    }
+  }
+
+  const onLogout = async() => {
+    try {
+      await onRemove('token')
+      navigator.dispatch( StackActions.popToTop );
+    } catch {
+      console.log('Logout failed')
+    }
   }
 
   return (
@@ -50,7 +107,7 @@ export const ProfileScreen = () => {
           onPress={ doShaking }
         >
           <Animated.View style={[ animatedStyle ]}>
-            <Image style={ styles.image } source={{ uri: user?.image }} />
+            <Image style={ styles.image } source={{ uri: image ? image : user?.image }} />
           </Animated.View>
         </Pressable>
         <View style={ styles.infoContainer }>
@@ -59,6 +116,12 @@ export const ProfileScreen = () => {
           <Text style={ globalStyles.title }>{ user?.email }</Text>
         </View>
       </View>
+      <Pressable
+        style={ styles.logout }
+        onPress={ onLogout }
+      >
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>Logout</Text>
+      </Pressable>
     </View>
   )
 }
@@ -77,5 +140,13 @@ const styles = StyleSheet.create({
   image: {
     borderRadius: 10,
     height: 300
+  },
+  logout: {
+    height: 30,
+    width: 150,
+    borderRadius: 5,
+    backgroundColor: globalColors.destructive,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })

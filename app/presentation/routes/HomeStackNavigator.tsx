@@ -26,7 +26,8 @@ export const HomeStackNavigator = () => {
         component={ HomeScreen }
       />
       <Stack.Screen 
-        name="ProductDetail" 
+        name="ProductDetail"
+        options={{ title: '', headerBackButtonDisplayMode: 'minimal'}} 
         component={ ProductDetailScreen }
       />
     </Stack.Navigator>

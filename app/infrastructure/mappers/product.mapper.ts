@@ -10,6 +10,7 @@ export class ProductMapper {
       category: result.category,
       images: result.images,
       thumbnail: result.thumbnail,
+      isFavorite: false,
       reviews: result.reviews.map( review => ({
         id: Math.random(),
         rating: review.rating,

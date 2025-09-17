@@ -17,6 +17,9 @@ export const ProductDetailScreen = ({ route }: Props) => {
   
   useEffect(() => {
     navigator.setOptions({ headerShown: true });
+    navigator.getParent()?.setOptions({
+      headerShown: false
+    });
   })
 
   return (

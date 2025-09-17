@@ -16,15 +16,21 @@ export const LoginScreen = () => {
 
   const [ password, setPassword ] = useState<string>();
   const { username, onChangeUsername } = useUsername();
-  const { isLoading, token, hasError, onLoginSubmit } = useLogin(username!, password!);
+  const { isLoading, data, hasError, onLoginSubmit, onGet, onSaveUserData } = useLogin(username!, password!);
+
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   useFocusEffect(
     useCallback(() => {
-      if (token.length > 0) {
-        navigation.navigate('Home');
-      }
-    }, [token])
+      console.log('useCallback: ', data)
+      onGet('token').then((val) => {
+        if (val === null || val === undefined) return;
+        if (val.length > 0) {
+          onSaveUserData();
+          navigation.navigate('Home');
+        }
+      })
+    }, [data])
   );
 
   if (isLoading) {

@@ -1,10 +1,11 @@
 
-import { globalStyles } from '@/app/config/app-theme';
+import { globalColors, globalStyles } from '@/app/config/app-theme';
 import { Product } from '@/app/core/entities/product.entity';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { HomeStackParams } from '../../routes/HomeStackNavigator';
+import { IonIcon } from '../shared/IonIcon';
 
 interface Props {
   product: Product;
@@ -24,7 +25,10 @@ export const ProductCard = ({ product }: Props) => {
       })}
     >
       <View style={ styles.imageContainer }>
-        <Image style={ styles.image } source={{ uri: product.thumbnail }} />
+        <View style={{ flex: 1 }}>
+          <IonIcon name={ product.isFavorite ? 'bookmark' : 'bookmark-outline' } color={ globalColors.accent } />
+          <Image style={ styles.image } source={{ uri: product.thumbnail }} />
+        </View>
         <Text style={ globalStyles.title }>{ product.title }</Text>
         <Text style={ globalStyles.price }>${ product.price }</Text>
       </View>
