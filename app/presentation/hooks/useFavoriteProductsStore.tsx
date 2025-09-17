@@ -9,6 +9,7 @@ interface IFavProductStore {
     userProductList: Product[];
     addUserProduct: (product: Product) => void;
     removeUserProduct: (id:number) => void;
+    removeAllProducts: () => void;
 }
 
 export const useProductUserPersistStore = create<IFavProductStore>()(
@@ -19,8 +20,12 @@ export const useProductUserPersistStore = create<IFavProductStore>()(
         })),
         removeUserProduct: (id) => set((state)=> ({
             userProductList: state.userProductList.filter((product)=> product.id!==id)
+        })),
+        removeAllProducts: () => set((state) => ({
+            userProductList: []
         }))
     }), {
         name: 'favorite-product-storage',
         storage: createJSONStorage(() => AsyncStorage)
-}));
+    })
+);

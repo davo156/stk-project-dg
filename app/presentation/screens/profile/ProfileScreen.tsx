@@ -8,6 +8,7 @@ import { Animated, Easing, Image, Pressable, ScrollView, StyleSheet, Text, View 
 import { ProductsList } from '../../components/products/ProductsList';
 import { useProductUserPersistStore } from '../../hooks/useFavoriteProductsStore';
 import { useSecureStore } from '../../hooks/useLoginStore';
+import { useProfileImageStore } from '../../hooks/useProfileImageStore';
 
 export const ProfileScreen = () => {
   const { user, setUser } = useUserContext();
@@ -17,10 +18,11 @@ export const ProfileScreen = () => {
   const { onRemove } = useSecureStore()
   const navigator = useNavigation();
 
-  const [image, setImage] = useState<string | null>(null);
   const [permission, setPermission] = useState<boolean>(false);
 
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
+
+  const { profileImage, addProfileImage } = useProfileImageStore();
 
   const animatedStyle = {
     transform: [{ translateX: shake }]
@@ -28,7 +30,7 @@ export const ProfileScreen = () => {
 
   useEffect(() => {
     if (status?.granted) {
-      //pickImage();
+      pickImage();
     }
   }, [permission])
 
@@ -82,7 +84,7 @@ export const ProfileScreen = () => {
     })
 
     if ( !result.canceled ) {
-      setImage(result.assets[0].uri);
+      addProfileImage(result.assets[0])
       setUser({
         name: user?.name ?? '', 
         username: user?.username ?? '', 
@@ -111,7 +113,7 @@ export const ProfileScreen = () => {
             onPress={ doShaking }
           >
             <Animated.View style={[ animatedStyle ]}>
-              <Image style={ styles.image } source={{ uri: image ? image : user?.image }} />
+              <Image style={ styles.image } source={{ uri: profileImage ? profileImage.uri : user?.image }} />
             </Animated.View>
           </Pressable>
           <View style={ styles.infoContainer }>
