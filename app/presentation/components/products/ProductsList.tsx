@@ -6,18 +6,20 @@ import { ProductCard } from './ProductCard';
 
 interface Props {
   products: Product[];
+  fromProfile?: boolean;
 }
 
-export const ProductsList = ({ products }: Props) => {
+export const ProductsList = ({ products, fromProfile = false }: Props) => {
   return (
     <FlatList 
       data = { products }
       renderItem={ ({ item }) => (
-        <ProductCard product={ item } />
+        <ProductCard fromProfile={ fromProfile } product={ item } />
       )}
       keyExtractor={ item => item.id.toString() }
-      numColumns={ 2 }
+      numColumns={ fromProfile ? 3 : 2 }
       columnWrapperStyle={ styles.column}
+      scrollEnabled= { !fromProfile }
     />
   )
 }

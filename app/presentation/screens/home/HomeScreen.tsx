@@ -6,7 +6,6 @@ import { ProductsList } from '../../components/products/ProductsList'
 import { useProducts } from '../../hooks/useProducts'
 
 export const HomeScreen = () => {
-
   const { isLoading, products } = useProducts();
 
   if (isLoading) {

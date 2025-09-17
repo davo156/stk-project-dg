@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
 import { RootStackParams } from '@/app/_layout';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { globalStyles } from '@/app/config/app-theme';
 import { Product } from '@/app/core/entities/product.entity';
-import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useFocusEffect, useNavigation } from 'expo-router';
 import { AddProductButton } from '../../components/productDetail/AddProductButton';
 import { CarouselImg } from '../../components/productDetail/CarouselImg';
 import { ReviewsList } from '../../components/productDetail/ReviewsList';
@@ -16,16 +16,19 @@ import { useProducts } from '../../hooks/useProducts';
 //interface Props extends NativeStackScreenProps<HomeStackParams, 'ProductDetail'> {};
 interface Props extends NativeStackScreenProps<RootStackParams, 'ProductDetail'> {};
 
-
 export const ProductDetailScreen = ({ route }: Props) => {
   const {id} = route.params
   const {products} = useProducts()
   const [product, setProduct] = useState<Product>();
+
   const navigator = useNavigation();
-  
-  useEffect(() => {
-    navigator.setOptions({ headerShown: true });
-  })
+  useFocusEffect(
+    useCallback(() => {
+      navigator.setOptions({
+        headerShown: true
+      })
+    }, [])
+  );
 
   useEffect(() => {
     //navigator.setOptions({ headerShown: true });

@@ -6,6 +6,7 @@ export interface Product {
   category: string,
   images: string[],
   thumbnail: string,
+  isFavorite: boolean,
   reviews: ProductReview[]
 }
 

@@ -5,6 +5,7 @@ export const globalColors = {
   secondary: '#393E46',
   tertiary: '#a0a0a0ff' ,
   accent: '#00ADB5',
+  destructive: '#af3b3bff',
   error: '#96243bff',
   background: '#EEEEEE',
 }

@@ -1,7 +1,7 @@
 import { useUserContext } from '@/app/core/context/auth.provider';
 import { loginCase } from '@/app/core/use-cases/auth/login-case';
 import { useState } from 'react';
-import { useLoginStore } from './useLoginStore';
+import { useLoginStore, useSecureStore } from './useLoginStore';
 
 
 export const useLogin = ( username: string, password: string) => {
@@ -9,7 +9,9 @@ export const useLogin = ( username: string, password: string) => {
   const [hasError, setHasError] = useState(false);
 
   const token = useLoginStore( state => state.token );
-  const loginStore = useLoginStore( state => state.setToken );
+  //const loginStore = useLoginStore( state => state.setToken );
+
+  const { data, onSave, onGet } = useSecureStore();
 
   const { setUser } = useUserContext();
   
@@ -17,23 +19,37 @@ export const useLogin = ( username: string, password: string) => {
     setIsLoading(true);
     const isLogged = await loginCase(username, password);
     setHasError(!isLogged);
-    loginStore( isLogged ? 'fake-token' : '' );
+    //loginStore( isLogged ? 'fake-token' : '' );
+    onSaveUserData()
+
+    await onSave('token', isLogged ? 'fake-token' : '')
+    await onSave('username', isLogged ? username : '')
+    setIsLoading(false);
+  }
+
+  const onSaveUserData = async() => {
+    let name = await onGet('username')
+
+    if ( name === undefined || name === null ) {
+      name = 'NA'
+    }
 
     setUser({ 
       name: 'David Gutierrez', 
-      username: username, 
+      username: name, 
       email: 'davido.gutierrez@softtek.com', 
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' 
     });
-
-    setIsLoading(false);
   }
 
   return {
     isLoading,
     token,
+    data,
     hasError,
-    onLoginSubmit
+    onLoginSubmit,
+    onGet,
+    onSaveUserData
   }
 }
 

@@ -14,23 +14,12 @@ export type HomeStackParams = {
 const Stack = createNativeStackNavigator();
 
 export const HomeStackNavigator = () => {
-
-  // const navigator = useNavigation();
-
-  // useEffect(() => {
-  //   navigator.setOptions({ headerShown: false });
-  // }, [])
-
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen 
-        name="Products" 
+        name="Products"
         component={ HomeScreen }
       />
-      {/* <Stack.Screen 
-        name="ProductDetail" 
-        component={ ProductDetailScreen }
-      /> */}
       <Stack.Screen 
         name="Profile" 
         component={ ProfileScreen }

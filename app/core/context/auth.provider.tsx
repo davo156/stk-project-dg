@@ -15,15 +15,6 @@ type ContextProviderProps = {
 export const AppProvider = ({ children }: ContextProviderProps ) => {
   const [user, setUser] = useState<User | null>(null);
 
-  // const loginUser = useCallback(() => {
-  //   setUser({ 
-  //     name: 'David Gutierrez', 
-  //     username: 'username', 
-  //     email: 'davido.gutierrez@softtek.com', 
-  //     image: 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' 
-  //   });
-  // }, []);
-
   return (
     <AppContext.Provider value={{ user, setUser }}>
       { children }
