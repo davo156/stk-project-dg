@@ -2,13 +2,14 @@
 
 import { RootStackParams } from '@/app/_layout';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { globalStyles } from '@/app/config/app-theme';
 import { Product } from '@/app/core/entities/product.entity';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AddProductButton } from '../../components/productDetail/AddProductButton';
+import { CarouselImg } from '../../components/productDetail/CarouselImg';
 import { ReviewsList } from '../../components/productDetail/ReviewsList';
 import { useProducts } from '../../hooks/useProducts';
 
@@ -35,10 +36,11 @@ export const ProductDetailScreen = ({ route }: Props) => {
     return (
       <ScrollView>
         <View style={ styles.container }>
-          <Image
+          {/* <Image
             style={ styles.image }
             source={{ uri: product.images[0] }}
-          />
+          /> */}
+          <CarouselImg imageList={product.images}/>
           <View style={ styles.priceContainer }>
             <Text style={ globalStyles.header }>{ product.title }</Text>
             <Text style={ globalStyles.description }>Category: { product.category }</Text>
