@@ -5,10 +5,15 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+
 import { useSecureStore } from '../../hooks/useLoginStore';
+
+import { ProductsList } from '../../components/products/ProductsList';
+import { useProductUserPersistStore } from '../../hooks/useFavoriteProductsStore';
 
 export const ProfileScreen = () => {
   const { user, setUser } = useUserContext();
+  const {userProductList} = useProductUserPersistStore();
   const shake = useRef( new Animated.Value(0)).current;
 
   const { onRemove } = useSecureStore()
@@ -122,6 +127,10 @@ export const ProfileScreen = () => {
       >
         <Text style={{ color: 'white', fontWeight: 'bold' }}>Logout</Text>
       </Pressable>
+      <View style={styles.listContainer}>
+        <Text>My favorites</Text>
+        <ProductsList products={userProductList} />
+      </View>
     </View>
   )
 }
@@ -147,6 +156,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: globalColors.destructive,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+  listContainer: {
+    display: 'flex',
+    flex: 1,
+    height: 'auto'
   }
 })

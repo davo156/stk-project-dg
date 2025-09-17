@@ -1,18 +1,26 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
-import React, { useEffect } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { HomeStackParams } from '../../routes/HomeStackNavigator';
+import { RootStackParams } from '@/app/_layout';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { globalStyles } from '@/app/config/app-theme';
+import { Product } from '@/app/core/entities/product.entity';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AddProductButton } from '../../components/productDetail/AddProductButton';
+import { CarouselImg } from '../../components/productDetail/CarouselImg';
 import { ReviewsList } from '../../components/productDetail/ReviewsList';
+import { useProducts } from '../../hooks/useProducts';
 
-interface Props extends NativeStackScreenProps<HomeStackParams, 'ProductDetail'> {};
+//interface Props extends NativeStackScreenProps<HomeStackParams, 'ProductDetail'> {};
+interface Props extends NativeStackScreenProps<RootStackParams, 'ProductDetail'> {};
+
 
 export const ProductDetailScreen = ({ route }: Props) => {
-  const { product } = route.params;
+  const {id} = route.params
+  const {products} = useProducts()
+  const [product, setProduct] = useState<Product>();
   const navigator = useNavigation();
   
   useEffect(() => {
@@ -22,25 +30,35 @@ export const ProductDetailScreen = ({ route }: Props) => {
     });
   })
 
-  return (
-    <ScrollView>
-      <View style={ styles.container }>
-        <Image
-          style={ styles.image }
-          source={{ uri: product.images[0] }}
-        />
-        <View style={ styles.priceContainer }>
-          <Text style={ globalStyles.header }>{ product.title }</Text>
-          <Text style={ globalStyles.description }>Category: { product.category }</Text>
+  useEffect(() => {
+    //navigator.setOptions({ headerShown: true });
+    setProduct(products.find(product => id === product.id))
+  },[])
+
+  if (product!==undefined) {
+    return (
+      <ScrollView>
+        <View style={ styles.container }>
+          {/* <Image
+            style={ styles.image }
+            source={{ uri: product.images[0] }}
+          /> */}
+          <CarouselImg imageList={product.images}/>
+          <View style={ styles.priceContainer }>
+            <Text style={ globalStyles.header }>{ product.title }</Text>
+            <Text style={ globalStyles.description }>Category: { product.category }</Text>
+          </View>
+          <Text style={ globalStyles.price}>{ product.price }</Text>
+          <View style={ globalStyles.line } />
+          <Text style={ globalStyles.description}>{ product.description }</Text>
+          <View style={ globalStyles.line } />
+          <ReviewsList reviews={ product.reviews } />
+          <AddProductButton product={product}/>      
         </View>
-        <Text style={ globalStyles.price}>{ product.price }</Text>
-        <View style={ globalStyles.line } />
-        <Text style={ globalStyles.description}>{ product.description }</Text>
-        <View style={ globalStyles.line } />
-        <ReviewsList reviews={ product.reviews } />
-      </View>
-    </ScrollView>
-  )
+      </ScrollView>
+    )
+  }
+
 }
 
 const styles = StyleSheet.create({

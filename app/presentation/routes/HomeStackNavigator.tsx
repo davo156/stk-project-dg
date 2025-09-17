@@ -1,12 +1,14 @@
  
-import { Product } from "@/app/core/entities/product.entity";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeScreen } from "../screens/home/HomeScreen";
-import { ProductDetailScreen } from "../screens/products/ProductDetailScreen";
+import { ProfileScreen } from "../screens/profile/ProfileScreen";
 
 export type HomeStackParams = {
   Home: undefined;
-  ProductDetail: { product: Product }
+  // ProductDetail: { product: Product }
+  //ProductDetail: { id: number }
+  Profile: undefined
+
 }
 
 const Stack = createNativeStackNavigator();
@@ -25,10 +27,15 @@ export const HomeStackNavigator = () => {
         name="Products" 
         component={ HomeScreen }
       />
-      <Stack.Screen 
-        name="ProductDetail"
-        options={{ title: '', headerBackButtonDisplayMode: 'minimal'}} 
+
+      {/* <Stack.Screen 
+        name="ProductDetail" 
         component={ ProductDetailScreen }
+      /> */}
+      
+      <Stack.Screen 
+        name="Profile" 
+        component={ ProfileScreen }
       />
     </Stack.Navigator>
   )
