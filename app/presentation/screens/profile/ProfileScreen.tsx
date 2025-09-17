@@ -28,7 +28,7 @@ export const ProfileScreen = () => {
 
   useEffect(() => {
     if (status?.granted) {
-      pickImage();
+      //pickImage();
     }
   }, [permission])
 
@@ -139,24 +139,29 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     margin: 15,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    gap: 10
   },
   infoContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
-    paddingLeft: 10,
+    gap: 5
+    //paddingLeft: 10,
+    // backgroundColor: 'red'
   },
   image: {
     borderRadius: 10,
-    height: 300
+    height: 200
   },
   logout: {
     height: 30,
-    width: 150,
-    borderRadius: 5,
+    width: '100%',
+    borderRadius: 15,
     backgroundColor: globalColors.destructive,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
   },
   listContainer: {
     display: 'flex',
