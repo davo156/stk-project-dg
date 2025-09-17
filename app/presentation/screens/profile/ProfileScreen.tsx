@@ -2,9 +2,12 @@ import { globalStyles } from '@/app/config/app-theme';
 import { useUserContext } from '@/app/core/context/auth.provider';
 import React, { useRef } from 'react';
 import { Animated, Easing, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ProductsList } from '../../components/products/ProductsList';
+import { useProductUserPersistStore } from '../../hooks/useFavoriteProductsStore';
 
 export const ProfileScreen = () => {
   const { user } = useUserContext();
+  const {userProductList} = useProductUserPersistStore();
   const shake = useRef( new Animated.Value(0)).current;
 
   const animatedStyle = {
@@ -59,6 +62,10 @@ export const ProfileScreen = () => {
           <Text style={ globalStyles.title }>{ user?.email }</Text>
         </View>
       </View>
+      <View style={styles.listContainer}>
+        <Text>My favorites</Text>
+        <ProductsList products={userProductList} />
+      </View>
     </View>
   )
 }
@@ -77,5 +84,10 @@ const styles = StyleSheet.create({
   image: {
     borderRadius: 10,
     height: 300
+  },
+  listContainer: {
+    display: 'flex',
+    flex: 1,
+    height: 'auto'
   }
 })
