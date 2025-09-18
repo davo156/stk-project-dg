@@ -64,18 +64,20 @@ const styles = StyleSheet.create( {
   },
   imageContainer: {
     flex: 1,
-    backgroundColor: '#f7f7f7ff',
-    borderRadius: 8,
+    backgroundColor: 'white',
+    borderRadius: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 5,
     },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
     elevation: 3,
     paddingHorizontal: 8,
-    paddingVertical: 10
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: '#cbcbcbff'
   }
 })
 

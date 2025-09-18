@@ -112,7 +112,7 @@ export const ProfileScreen = () => {
             style={{ flex: 1 }}
             onPress={ doShaking }
           >
-            <Animated.View style={[ animatedStyle ]}>
+            <Animated.View style={[ animatedStyle, { overflow: 'hidden'} ]}>
               <Image style={ styles.image } source={{ uri: profileImage ? profileImage.uri : user?.image }} />
             </Animated.View>
           </Pressable>
@@ -128,8 +128,9 @@ export const ProfileScreen = () => {
             </Pressable>
           </View>
         </View>
+        <View style={ globalStyles.line } />
         <View style={styles.listContainer}>
-          <Text style={ [globalStyles.header2, { paddingLeft: 10 }] }>Archived products</Text>
+          <Text style={ [globalStyles.header2, { paddingLeft: 10 }] }>Favorite products</Text>
           <ProductsList fromProfile={ true } products={userProductList} />
         </View>
       </View>
@@ -139,21 +140,25 @@ export const ProfileScreen = () => {
 
 const styles = StyleSheet.create({ 
   mainContainer: {
-    flex: 1,
-    margin: 15,
+    //flex: 1,
+    margin: 10,
     flexDirection: 'row',
-    gap: 10
+    gap: 0,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#cbcbcbff'
   },
   infoContainer: {
     // flex: 1,
     flexDirection: 'column',
-    gap: 5
-    //paddingLeft: 10,
-    // backgroundColor: 'red'
+    gap: 5,
+    margin: 8
   },
   image: {
-    borderRadius: 10,
-    height: 200
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    height: 180,
   },
   logout: {
     height: 30,
@@ -163,11 +168,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 0,
+    bottom: 5,
   },
   listContainer: {
-    display: 'flex',
     flex: 1,
+    display: 'flex',
     height: 'auto'
   }
 })

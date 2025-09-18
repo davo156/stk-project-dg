@@ -18,7 +18,7 @@ export const ProductsList = ({ products, fromProfile = false }: Props) => {
       )}
       keyExtractor={ item => item.id.toString() }
       numColumns={ fromProfile ? 3 : 2 }
-      columnWrapperStyle={ styles.column}
+      columnWrapperStyle={ styles.column }
       scrollEnabled= { !fromProfile }
     />
   )
@@ -26,7 +26,8 @@ export const ProductsList = ({ products, fromProfile = false }: Props) => {
 
 const styles = StyleSheet.create({
   column: {
-    justifyContent: 'space-between',
-    padding: 10
+    //justifyContent: 'space-between',
+    padding: 10,
+    gap: 10
   }
 })
