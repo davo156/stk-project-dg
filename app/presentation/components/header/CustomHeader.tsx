@@ -13,8 +13,8 @@ export const CustomHeader = ({ image }: Props) => {
   const { top } = useSafeAreaInsets();
 
   return (
-    <View style={{ ...styles.container, height: top + 40 } }>
-      <View style={{ top: 20 }}>
+    <View style={{ ...styles.container, height: top + 60 } }>
+      <View style={{ top: 0 }}>
         <IonIcon name={image} />
       </View>
     </View>

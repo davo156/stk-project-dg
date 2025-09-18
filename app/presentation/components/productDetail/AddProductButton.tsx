@@ -1,6 +1,7 @@
+import { globalColors } from '@/app/config/app-theme';
 import { Product } from '@/app/core/entities/product.entity';
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import { useProductUserPersistStore } from '../../hooks/useFavoriteProductsStore';
 
 interface Props {
@@ -42,6 +43,26 @@ export const AddProductButton = ({product}:Props) => {
     }
 
     return (
-        <Button title={textButton} onPress={handlePressButton} />
+        <Pressable
+            style={ styles.button }
+            onPress={ handlePressButton }
+        >
+            <Text style={ styles.txtButton }>{ textButton }</Text>
+        </Pressable>
     )
 }
+
+const styles = StyleSheet.create({
+    button: {
+        backgroundColor: globalColors.accent,
+        height: 40,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    txtButton: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16
+    }
+})
