@@ -106,7 +106,7 @@ export const ProfileScreen = () => {
   return (
     <ScrollView>
       <View style={{ flex: 1, padding: 10 }}>
-        <Text style={ globalStyles.header }>Welcome to your profile!</Text>
+        <Text style={ [globalStyles.header, { paddingLeft: 10 }] }>Welcome to your profile!</Text>
         <View style={ styles.mainContainer }>
           <Pressable 
             style={{ flex: 1 }}
@@ -156,8 +156,8 @@ const styles = StyleSheet.create({
     margin: 8
   },
   image: {
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 9,
+    borderBottomLeftRadius: 9,
     height: 180,
   },
   logout: {

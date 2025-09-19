@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 10,
+    paddingBottom: 40
   },
   priceContainer: {
     flexDirection: 'column',

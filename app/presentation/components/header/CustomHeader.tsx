@@ -1,7 +1,7 @@
 
 import Ionicons from '@expo/vector-icons/Ionicons'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { IonIcon } from '../shared/IonIcon'
 
@@ -11,10 +11,11 @@ interface Props {
 
 export const CustomHeader = ({ image }: Props) => {
   const { top } = useSafeAreaInsets();
+  const topSpace = Platform.OS === 'ios' ? 20 : 0
 
   return (
-    <View style={{ ...styles.container, height: top + 60 } }>
-      <View style={{ top: 0 }}>
+    <View style={{ ...styles.container, height: top + 55 } }>
+      <View style={{ top: topSpace }}>
         <IonIcon name={image} />
       </View>
     </View>
